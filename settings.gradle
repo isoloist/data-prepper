@@ -14,13 +14,37 @@ pluginManagement {
     // third-party build plugin is declared here.
     includeBuild('data-prepper-gradle-plugins/osgi-plugin')
     repositories {
+        maven {
+            url 'http://jfrog.cloud.qiyi.domain/gradle-plugins'
+            allowInsecureProtocol = true
+        }
+        maven {
+            url 'http://jfrog.cloud.qiyi.domain/libs-release'
+            allowInsecureProtocol = true
+        }
         mavenCentral()
         gradlePluginPortal()
     }
 }
 
 dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.PREFER_SETTINGS)
+
     repositories {
+        maven {
+            url 'http://jfrog.cloud.qiyi.domain/libs-release'
+            allowInsecureProtocol = true
+            mavenContent { releasesOnly() }
+        }
+        maven {
+            url 'http://jfrog.cloud.qiyi.domain/libs-snapshot'
+            allowInsecureProtocol = true
+            mavenContent { snapshotsOnly() }
+        }
+        maven {
+            url 'http://jfrog.cloud.qiyi.domain/iqiyi-maven-cloudservice'
+            allowInsecureProtocol = true
+        }
         mavenCentral()
         maven {
             url 'https://packages.confluent.io/maven/'
@@ -218,6 +242,7 @@ include 'data-prepper-plugins:http-source-common'
 include 'data-prepper-plugins:http-common'
 include 'data-prepper-plugins:http-client-common'
 include 'data-prepper-plugins:aws-lambda'
+include 'data-prepper-plugins:rocketmq-source'
 include 'data-prepper-plugins:ml-inference-processor'
 include 'data-prepper-plugins:s3-common'
 include 'data-prepper-plugins:s3-enrich-processor'
